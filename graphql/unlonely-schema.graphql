@@ -1,0 +1,1501 @@
+"""
+Unlonely GraphQL API schema (SDL).
+Rendered from the introspection file graphql/unlonely-schema.json, saved verbatim from
+https://raw.githubusercontent.com/bguan2020/unlonely-alpha/master/unlonely-alpha/server/schema.json
+NOTE: The hosted Unlonely API is no longer live (unlonely.app domain registration expired
+as of 2026-07); this schema documents the API surface the open-source platform served.
+"""
+
+enum SortOrder {
+  asc
+  desc
+}
+
+enum SortBy {
+  score
+  createdAt
+  totalMints
+}
+
+type Query {
+  _empty: String
+  currentUser: User
+  currentUserAuthMessage: String
+  getUser(data: GetUserInput!): User
+  getLeaderboard: [User]
+  getAllUsers: [User]
+  updateAllUsers: [User]
+  getAllUsersWithChannel: [User]
+  getAllUsersWithNotificationsToken: [User]
+  getUserChannelContract1155Mapping(data: GetUserInput!): JSON
+  getUserPackageCooldownMapping(data: GetUserInput!): JSON
+  getUserTokenHolding(data: GetUserTokenHoldingInput!): Int
+  getDoesUserAddressMatch(data: GetDoesUserAddressMatchInput!): GetDoesUserAddressMatchResponse
+  getVideo(id: ID!): Video
+  getVideoFeed(data: VideoFeedInput): [Video]
+  getTaskFeed(data: TaskFeedInput): [Task]
+  getPoap(data: GetPoapInput): Poap
+  getRecentChats(data: GetChatInput!): [Chat]
+  firstChatExists: Boolean
+  chatBot: [Chat]
+  getNFCFeed(data: NFCFeedInput): [NFC]
+  getNFC(id: ID!): NFC
+  getNFCByTokenData(data: GetNFCByTokenDataInput): NFC
+  getLivepeerClipData(data: GetLivepeerClipDataInput): LivepeerClipDataResponse
+  getUniqueContract1155Addresses(data: GetUniqueContract1155AddressesInput): [UniqueContract1155AddressesResponse]
+  getStreamInteractions(data: GetStreamInteractionsInput): [StreamInteraction]
+  getChannelSearchResults(data: ChannelSearchInput!): [Channel]
+  getChannelFeed(data: ChannelFeedInput): [Channel]
+  getChannelWithTokenById(id: ID!): Channel
+  getChannelById(id: ID!): Channel
+  getChannelBySlug(slug: String!): Channel
+  getChannelByAwsId(awsId: String!): Channel
+  getChannelsByOwnerAddress(ownerAddress: String!): [Channel]
+  getLivepeerStreamData(data: GetLivepeerStreamDataInput!): LivepeerStreamData
+  getLivepeerStreamSessionsData(data: IGetLivepeerStreamSessionsDataInput!): [LivepeerStreamSessionsData]
+  getLivepeerViewershipMetrics(data: IGetLivepeerViewershipMetricsInput!): [LivepeerViewershipMetrics]
+  getDeviceByToken(data: GetDeviceByTokenInput!): DeviceToken
+  getAllDevices: [DeviceToken]
+  getTokenHoldersByChannel(data: GetTokenHoldersInput): [UserCreatorToken!]!
+  getTokenLeaderboard: [CreatorToken!]!
+  getAllActiveSubscriptions: [Subscription]
+  getSubscriptionsByChannelId(data: GetSubscriptionsByChannelIdInput!): [Subscription]
+  sendAllNotifications(data: SendAllNotificationsInput!): Boolean
+  checkSubscriptionByEndpoint(data: ToggleSubscriptionInput!): Boolean
+  getSubscriptionByEndpoint(data: ToggleSubscriptionInput!): Subscription
+  getBaseLeaderboard: [BaseLeaderboard!]!
+  getBadgeHoldersByChannel(data: GetBadgeHoldersByChannelInput): [String]!
+  getChannelsByNumberOfBadgeHolders: [NumberOfHolders]!
+  getBetsByChannel(data: GetBetsByChannelInput): [GamblableInteraction]!
+  getBetsByUser(data: GetBetsByUserInput): [GamblableInteraction]!
+  getGamblableEventLeaderboardByChannelId(data: GetGamblableEventLeaderboardByChannelIdInput): [GamblableEventLeaderboard!]!
+  getGamblableEventUserRank(data: GetGamblableEventUserRankInput): Int!
+  getUnclaimedEvents(data: GetUnclaimedEvents): [SharesEvent]!
+  getVibesTransactions(data: GetVibesTransactionsInput!): [VibesTransaction]
+  getTempTokens(data: GetTempTokensInput): [TempToken]
+  getPackages: [Package!]!
+  getRooms: [Room!]!
+}
+
+type Mutation {
+  _empty: String
+  updateUserNotifications(data: UpdateUserNotificationsInput!): User
+  updateUserChannelContract1155Mapping(data: UpdateUserChannelContract1155MappingInput!): User
+  updateUserPackageCooldownMapping(data: UpdateUserPackageCooldownMappingInput!): User
+  updateUser(data: UpdateUserInput!): UpdateUserResponse
+  updateUsername(data: UpdateUsernameInput!): User
+  updateUsers(data: UpdateUsersInput!): [User]
+  handleLike(data: HandleLikeInput!): Likable
+  postVideo(data: PostVideoInput!): Video
+  softDeleteVideo(id: ID!): Boolean
+  postTask(data: PostTaskInput!): Task
+  softDeleteTask(id: ID!): Boolean
+  postFirstChat(data: PostChatInput!): Chat
+  postChatByAwsId(data: PostChatByAwsIdInput!): Chat
+  createLivepeerClip(data: CreateLivepeerClipInput): ClipNFCOutput
+  createClip(data: CreateClipInput): ClipNFCOutput
+  postNFC(data: PostNFCInput!): NFC
+  updateNFC(data: UpdateNFCInput!): NFC
+  openseaNFCScript: String
+  updateOpenseaLink: NFC
+  requestUploadFromLivepeer(data: RequestUploadFromLivepeerInput!): RequestUploadResponse
+  trimVideo(data: TrimVideoInput!): String
+  concatenateOutroToTrimmedVideo(data: ConcatenateOutroToTrimmedVideoInput!): String
+  updateStreamInteraction(data: UpdateStreamInteractionInput!): StreamInteraction
+  postStreamInteraction(data: PostStreamInteractionInput!): StreamInteraction
+  updateLivepeerStreamData(data: UpdateLivepeerStreamDataInput!): LivepeerStreamData
+  postChannel(data: PostChannelInput!): Channel
+  softDeleteChannel(data: SoftDeleteChannelInput!): Channel
+  migrateChannelToLivepeer(data: MigrateChannelToLivepeerInput!): Channel
+  closeSharesEvents(data: PostCloseSharesEventsInput!): UpdateManyResponse
+  postSharesEvent(data: PostSharesEventInput!): Channel
+  updateChannelAllowNfcs(data: UpdateChannelAllowNfcsInput!): Channel
+  updateSharesEvent(data: UpdateSharesEventInput!): Channel
+  updateChannelText(data: UpdateChannelTextInput!): Channel
+  updateChannelCustomButton(data: UpdateChannelCustomButtonInput!): Channel
+  postUserRoleForChannel(data: PostUserRoleForChannelInput): ChannelUserRole
+  updateChannelVibesTokenPriceRange(data: UpdateChannelVibesTokenPriceRangeInput!): Channel
+  updatePinnedChatMessages(data: UpdatePinnedChatMessagesInput!): Channel
+  bulkLivepeerStreamIdMigration: UpdateManyResponse
+  resetLastNotificationAtMigration: Boolean
+  updateChannelFidSubscription(data: UpdateChannelFidSubscriptionInput!): String
+  postDeviceToken(data: PostDeviceTokenInput!): DeviceToken
+  updateDeviceToken(data: UpdateDeviceInput!): DeviceToken
+  createCreatorToken(data: CreateCreatorTokenInput!): CreatorToken!
+  updateCreatorTokenPrice(data: UpdateCreatorTokenPriceInput!): CreatorToken!
+  updateUserCreatorTokenQuantity(data: UpdateUserCreatorTokenQuantityInput!): UserCreatorToken!
+  updateDeleteChatCommands(data: UpdateDeleteChatCommandInput!): Channel
+  addSuggestedChannelsToSubscriptions(data: AddSuggestedChannelsToSubscriptionsInput!): [Subscription]
+  addChannelToSubscription(data: MoveChannelAlongSubscriptionInput!): Subscription
+  removeChannelFromSubscription(data: MoveChannelAlongSubscriptionInput!): Subscription
+  postSubscription(data: PostSubscriptionInput!): Subscription
+  softDeleteSubscription(data: SoftDeleteSubscriptionInput!): Subscription
+  toggleSubscription(data: ToggleSubscriptionInput!): Subscription
+  postBaseLeaderboard(data: PostBaseLeaderboardInput!): BaseLeaderboard!
+  postBet(data: PostBetInput!): GamblableInteraction!
+  postBetTrade(data: PostBetTradeInput!): GamblableInteraction!
+  postBadgeTrade(data: PostBadgeTradeInput!): GamblableInteraction!
+  postClaimPayout(data: PostClaimPayoutInput!): GamblableInteraction!
+  postVibesTrades(data: PostVibesTradesInput!): [VibesTransaction]
+  updateTempTokenHighestTotalSupply(data: UpdateTempTokenHighestTotalSupplyInput!): [TempToken]
+  updateEndTimestampForTokens(data: UpdateEndTimestampForTokensInput!): [TempToken]
+  updateTempTokenHasRemainingFundsForCreator(data: UpdateTempTokenHasRemainingFundsForCreatorInput!): [TempTokenWithBalance]
+  updateTempTokenIsAlwaysTradeable(data: UpdateTempTokenIsAlwaysTradeableInput!): Boolean!
+  updateTempTokenHasHitTotalSupplyThreshold(data: UpdateTempTokenHasHitTotalSupplyThresholdInput!): Boolean!
+  updateTempTokenTransferredLiquidityOnExpiration(data: UpdateTempTokenTransferredLiquidityOnExpirationInput!): TempToken
+  postTempToken(data: PostTempTokenInput!): TempToken
+  updatePackage(data: UpdatePackageInput!): Package!
+  updateRooms(data: UpdateRoomsInput!): Room!
+}
+
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+"""
+A time string at UTC, such as 10:15:30Z, compliant with the `full-time` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Time
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
+"""
+scalar DateTimeISO
+
+"""
+The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+"""
+A field whose value exists in the standard IANA Time Zone Database: https://www.iana.org/time-zones
+"""
+scalar TimeZone
+
+"""
+A field whose value is a UTC Offset: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+"""
+scalar UtcOffset
+
+"\n    A string representing a duration conforming to the ISO8601 standard,\n    such as: P1W1DT13H23M34S\n    P is the duration designator (for period) placed at the start of the duration representation.\n    Y is the year designator that follows the value for the number of years.\n    M is the month designator that follows the value for the number of months.\n    W is the week designator that follows the value for the number of weeks.\n    D is the day designator that follows the value for the number of days.\n    T is the time designator that precedes the time components of the representation.\n    H is the hour designator that follows the value for the number of hours.\n    M is the minute designator that follows the value for the number of minutes.\n    S is the second designator that follows the value for the number of seconds.\n\n    Note the time designator, T, that precedes the time value.\n\n    Matches moment.js, Luxon and DateFns implementations\n    ,/. is valid for decimal places and +/- is a valid prefix\n  "
+scalar Duration
+
+"\n    A string representing a duration conforming to the ISO8601 standard,\n    such as: P1W1DT13H23M34S\n    P is the duration designator (for period) placed at the start of the duration representation.\n    Y is the year designator that follows the value for the number of years.\n    M is the month designator that follows the value for the number of months.\n    W is the week designator that follows the value for the number of weeks.\n    D is the day designator that follows the value for the number of days.\n    T is the time designator that precedes the time components of the representation.\n    H is the hour designator that follows the value for the number of hours.\n    M is the minute designator that follows the value for the number of minutes.\n    S is the second designator that follows the value for the number of seconds.\n\n    Note the time designator, T, that precedes the time value.\n\n    Matches moment.js, Luxon and DateFns implementations\n    ,/. is valid for decimal places and +/- is a valid prefix\n  "
+scalar ISO8601Duration
+
+"""
+A local date string (i.e., with no associated timezone) in `YYYY-MM-DD` format, e.g. `2020-01-01`.
+"""
+scalar LocalDate
+
+"""
+A local time string (i.e., with no associated timezone) in 24-hr `HH:mm[:ss[.SSS]]` format, e.g. `14:25` or `14:25:06` or `14:25:06.123`.
+"""
+scalar LocalTime
+
+"""
+A local date-time string (i.e., with no associated timezone) in `YYYY-MM-DDTHH:mm:ss` format, e.g. `2020-01-01T00:00:00`.
+"""
+scalar LocalDateTime
+
+"""
+A local time string (i.e., with no associated timezone) in 24-hr `HH:mm[:ss[.SSS]]` format, e.g. `14:25` or `14:25:06` or `14:25:06.123`.  This scalar is very similar to the `LocalTime`, with the only difference being that `LocalEndTime` also allows `24:00` as a valid value to indicate midnight of the following day.  This is useful when using the scalar to represent the exclusive upper bound of a time block.
+"""
+scalar LocalEndTime
+
+"""
+A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
+"""
+scalar EmailAddress
+
+"""Floats that will have a value less than 0."""
+scalar NegativeFloat
+
+"""Integers that will have a value less than 0."""
+scalar NegativeInt
+
+"""A string that cannot be passed as an empty value"""
+scalar NonEmptyString
+
+"""Floats that will have a value of 0 or more."""
+scalar NonNegativeFloat
+
+"""Integers that will have a value of 0 or more."""
+scalar NonNegativeInt
+
+"""Floats that will have a value of 0 or less."""
+scalar NonPositiveFloat
+
+"""Integers that will have a value of 0 or less."""
+scalar NonPositiveInt
+
+"""
+A field whose value conforms to the standard E.164 format as specified in: https://en.wikipedia.org/wiki/E.164. Basically this is +17895551234.
+"""
+scalar PhoneNumber
+
+"""Floats that will have a value greater than 0."""
+scalar PositiveFloat
+
+"""Integers that will have a value greater than 0."""
+scalar PositiveInt
+
+"""
+A field whose value conforms to the standard postal code formats for United States, United Kingdom, Germany, Canada, France, Italy, Australia, Netherlands, Spain, Denmark, Sweden, Belgium, India, Austria, Portugal, Switzerland or Luxembourg.
+"""
+scalar PostalCode
+
+"""Floats that will have a value of 0 or more."""
+scalar UnsignedFloat
+
+"""Integers that will have a value of 0 or more."""
+scalar UnsignedInt
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+"""
+scalar BigInt
+
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+"""
+scalar Long
+
+"""The `Byte` scalar type represents byte value as a Buffer"""
+scalar Byte
+
+"""
+A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.
+"""
+scalar UUID
+
+"""
+A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.
+"""
+scalar GUID
+
+"""
+A field whose value is a hexadecimal: https://en.wikipedia.org/wiki/Hexadecimal.
+"""
+scalar Hexadecimal
+
+"""
+A field whose value is a hex color code: https://en.wikipedia.org/wiki/Web_colors.
+"""
+scalar HexColorCode
+
+"""
+A field whose value is a CSS HSL color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#hsl()_and_hsla().
+"""
+scalar HSL
+
+"""
+A field whose value is a CSS HSLA color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#hsl()_and_hsla().
+"""
+scalar HSLA
+
+"""
+A field whose value is either an IPv4 or IPv6 address: https://en.wikipedia.org/wiki/IP_address.
+"""
+scalar IP
+
+"""
+A field whose value is a IPv4 address: https://en.wikipedia.org/wiki/IPv4.
+"""
+scalar IPv4
+
+"""
+A field whose value is a IPv6 address: https://en.wikipedia.org/wiki/IPv6.
+"""
+scalar IPv6
+
+"""
+A field whose value is a ISBN-10 or ISBN-13 number: https://en.wikipedia.org/wiki/International_Standard_Book_Number.
+"""
+scalar ISBN
+
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+"""
+A field whose value is a valid decimal degrees latitude number (53.471): https://en.wikipedia.org/wiki/Latitude
+"""
+scalar Latitude
+
+"""
+A field whose value is a valid decimal degrees longitude number (53.471): https://en.wikipedia.org/wiki/Longitude
+"""
+scalar Longitude
+
+"""
+A field whose value is a IEEE 802 48-bit MAC address: https://en.wikipedia.org/wiki/MAC_address.
+"""
+scalar MAC
+
+"""
+A field whose value is a valid TCP port within the range of 0 to 65535: https://en.wikipedia.org/wiki/Transmission_Control_Protocol#TCP_ports
+"""
+scalar Port
+
+"""
+A field whose value is a CSS RGB color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb()_and_rgba().
+"""
+scalar RGB
+
+"""
+A field whose value is a CSS RGBA color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb()_and_rgba().
+"""
+scalar RGBA
+
+"""
+The `SafeInt` scalar type represents non-fractional signed whole numeric values that are considered safe as defined by the ECMAScript specification.
+"""
+scalar SafeInt
+
+"""A currency string, such as $21.25"""
+scalar USCurrency
+
+"""
+A field whose value is a Currency: https://en.wikipedia.org/wiki/ISO_4217.
+"""
+scalar Currency
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+"""
+A field whose value is an International Bank Account Number (IBAN): https://en.wikipedia.org/wiki/International_Bank_Account_Number.
+"""
+scalar IBAN
+
+"""
+A field whose value conforms with the standard mongodb object ID as described here: https://docs.mongodb.com/manual/reference/method/ObjectId/#ObjectId. Example: 5e5677d71bdc2ae76344968c
+"""
+scalar ObjectID
+
+"""Represents NULL values"""
+scalar Void
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID
+
+"""A country code as defined by ISO 3166-1 alpha-2"""
+scalar CountryCode
+
+"""The locale in the format of a BCP 47 (RFC 5646) standard string"""
+scalar Locale
+
+"""
+In the US, an ABA routing transit number (`ABA RTN`) is a nine-digit code to identify the financial institution.
+"""
+scalar RoutingNumber
+
+"""
+Banking account number is a string of 5 to 17 alphanumeric values for representing an generic account number
+"""
+scalar AccountNumber
+
+"""
+A field whose value conforms to the standard cuid format as specified in https://github.com/ericelliott/cuid#broken-down
+"""
+scalar Cuid
+
+"""A field whose value is a Semantic Version: https://semver.org"""
+scalar SemVer
+
+"""
+A field whose value conforms to the standard personal number (personnummer) formats for Sweden
+"""
+scalar SESSN
+
+"""
+A field whose value conforms to the standard DeweyDecimal format as specified by the OCLC https://www.oclc.org/content/dam/oclc/dewey/resources/summaries/deweysummaries.pdf
+"""
+scalar DeweyDecimal
+
+"""
+A field whose value conforms to the Library of Congress Subclass Format ttps://www.loc.gov/catdir/cpso/lcco/
+"""
+scalar LCCSubclass
+
+"""
+A field whose value is an IPC Class Symbol within the International Patent Classification System: https://www.wipo.int/classifications/ipc/en/
+"""
+scalar IPCPatent
+
+type ChannelContract1155Mapping {
+  contract1155Address: String!
+  contract1155ChainId: Int!
+}
+
+input PackageCooldownChange {
+  name: String!
+  lastUsedAt: String!
+  usableAt: String!
+}
+
+type PackageCooldownMapping {
+  lastUsedAt: String!
+  usableAt: String!
+}
+
+type User {
+  id: ID!
+  address: String!
+  authedAsMe: Boolean!
+  username: String
+  bio: String
+  powerUserLvl: Int!
+  videoSavantLvl: Int!
+  nfcRank: Int!
+  reputation: Int
+  isFCUser: Boolean!
+  FCImageUrl: String
+  FCHandle: String
+  isLensUser: Boolean!
+  lensHandle: String
+  lensImageUrl: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  signature: String
+  sigTimestamp: BigInt
+  notificationsTokens: String
+  notificationsLive: Boolean
+  notificationsNFCs: Boolean
+  channel: [Channel]
+  channelContract1155Mapping: JSON
+  packageCooldownMapping: JSON
+}
+
+type UpdateUserResponse {
+  newUserData: User
+  newSocialDataString: String
+  rawDataString: String
+  error: String
+}
+
+input GetUserInput {
+  address: String
+}
+
+input UpdateUserInput {
+  address: String
+}
+
+input UpdateUsersInput {
+  addresses: [String]
+}
+
+input GetUserTokenHoldingInput {
+  userAddress: String
+  tokenAddress: String
+}
+
+input UpdateUserNotificationsInput {
+  notificationsTokens: String
+  notificationsLive: Boolean
+  notificationsNFCs: Boolean
+}
+
+input UpdateUserChannelContract1155MappingInput {
+  channelId: ID!
+  contract1155ChainId: Int!
+  contract1155Address: String!
+  userAddress: String!
+}
+
+input GetDoesUserAddressMatchInput {
+  address: String!
+}
+
+type GetDoesUserAddressMatchResponse {
+  doesMatch: Boolean
+  user: User
+  contextUser: User
+}
+
+input UpdateUserPackageCooldownMappingInput {
+  userAddress: String!
+  newPackageCooldownChanges: [PackageCooldownChange]
+  replaceExisting: Boolean!
+}
+
+input UpdateUsernameInput {
+  address: String!
+  username: String!
+}
+
+enum LikeObj {
+  HOSTEVENT
+  NFC
+}
+
+interface Likable {
+  id: ID!
+  score: Int!
+  liked: Boolean
+  disliked: Boolean
+}
+
+type Like {
+  id: ID!
+  liked: Boolean!
+  disliked: Boolean!
+  liker: User!
+  nFC: NFC
+}
+
+input HandleLikeInput {
+  likedObj: LikeObj!
+  likableId: ID!
+  value: Int!
+}
+
+type Video {
+  id: ID!
+  youtubeId: String!
+  title: String!
+  thumbnail: String!
+  description: String!
+  score: Int!
+  skip: Int
+  pause: Int
+  liked: Boolean
+  skipped: Boolean
+  duration: Int!
+  owner: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  currentVideo: Boolean!
+}
+
+input VideoFeedInput {
+  searchString: String
+  skip: Int
+  limit: Int
+  orderBy: SortOrder
+}
+
+input PostVideoInput {
+  youtubeId: String
+  title: String
+  thumbnail: String
+  description: String
+  duration: Int
+}
+
+type Task {
+  id: ID!
+  taskType: String!
+  youtubeId: String
+  title: String
+  thumbnail: String
+  link: String
+  description: String
+  completed: Boolean!
+  owner: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean
+}
+
+input TaskFeedInput {
+  searchString: String
+  skip: Int
+  limit: Int
+  orderBy: SortOrder
+}
+
+input PostTaskInput {
+  taskType: String!
+  youtubeId: String
+  title: String
+  thumbnail: String
+  description: String
+  link: String
+}
+
+type Poap {
+  id: ID!
+  date: String!
+  link: String
+  isUsed: Boolean!
+  owner: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input GetPoapInput {
+  date: String!
+}
+
+type Chat {
+  id: ID!
+  text: String!
+  owner: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  channel: Channel!
+}
+
+input PostChatInput {
+  channelId: Int!
+  text: String!
+}
+
+input PostChatByAwsIdInput {
+  awsId: String!
+  text: String!
+}
+
+input GetChatInput {
+  channelId: Int!
+  limit: Int!
+}
+
+type NFC implements Likable {
+  id: ID!
+  title: String
+  videoLink: String
+  videoThumbnail: String
+  openseaLink: String
+  contract1155ChainId: Int
+  contract1155Address: String
+  score: Int!
+  liked: Boolean
+  disliked: Boolean
+  owner: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  channel: Channel
+  channelId: ID
+  zoraLink: String
+  totalMints: Int
+  tokenId: Int
+}
+
+type AssetTask {
+  id: String!
+}
+
+type Asset {
+  name: String!
+  id: String!
+  playbackId: String!
+  status: AssetStatus!
+  createdAt: String!
+  userId: String!
+}
+
+type AssetStatus {
+  phase: String!
+  updatedAt: String!
+  progress: Float
+  errorMessage: String
+}
+
+type RequestUploadResponse {
+  url: String!
+  tusEndpoint: String!
+  task: AssetTask!
+  asset: Asset!
+}
+
+type UniqueContract1155AddressesResponse {
+  contract1155Address: String!
+  contract1155ChainId: Int
+}
+
+type LivepeerClipDataResponse {
+  videoLink: String!
+  videoThumbnail: String!
+  errorMessage: String!
+  error: Boolean!
+}
+
+type Channel {
+  id: ID!
+  name: String
+  description: String
+  owner: User!
+  slug: String!
+  awsId: String!
+  channelArn: String
+  livepeerPlaybackId: String
+  streamKey: String
+  livepeerStreamId: String
+  playbackUrl: String
+  isLive: Boolean
+  allowNFCs: Boolean
+  thumbnailUrl: String
+  token: CreatorToken
+  softDelete: Boolean
+  customButtonAction: String
+  customButtonPrice: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  lastNotificationAt: DateTime!
+  chatCommands: [ChatCommand]
+  sharesEvent: [SharesEvent]
+  roles: [ChannelUserRole]
+  nfcs: [NFC]
+  vibesTokenPriceRange: [String]
+  pinnedChatMessages: [String]
+  contract1155ChainId: Int
+  contract1155Address: String
+  command: String!
+  response: String!
+  channel: Channel!
+}
+
+type ClipOutput {
+  url: String
+  thumbnail: String
+  errorMessage: String
+}
+
+type ClipNFCOutput implements Likable {
+  id: ID!
+  title: String
+  videoLink: String
+  videoThumbnail: String
+  openseaLink: String
+  score: Int!
+  liked: Boolean
+  disliked: Boolean
+  owner: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String
+  thumbnail: String
+  errorMessage: String
+}
+
+input NFCFeedInput {
+  limit: Int
+  offset: Int
+  orderBy: SortBy
+  channelId: Int
+  ownerAddress: String
+}
+
+input PostNFCInput {
+  channelId: ID!
+  title: String!
+  videoLink: String!
+  videoThumbnail: String!
+  openseaLink: String!
+  contract1155Address: String
+  tokenId: Int
+  zoraLink: String
+}
+
+input UpdateNFCInput {
+  id: ID!
+  title: String!
+  videoLink: String!
+  videoThumbnail: String!
+  openseaLink: String!
+}
+
+input CreateClipInput {
+  title: String!
+  channelId: ID!
+  channelArn: String!
+}
+
+input CreateLivepeerClipInput {
+  title: String!
+  channelId: ID!
+  livepeerPlaybackId: String!
+  noDatabasePush: Boolean
+}
+
+input RequestUploadFromLivepeerInput {
+  name: String!
+}
+
+input GetLivepeerClipDataInput {
+  assetId: String!
+}
+
+input TrimVideoInput {
+  startTime: Float!
+  endTime: Float!
+  videoLink: String!
+  name: String!
+}
+
+input GetNFCByTokenDataInput {
+  contract1155Address: String!
+  contract1155ChainId: Int!
+  tokenId: Int!
+}
+
+input ConcatenateOutroToTrimmedVideoInput {
+  trimmedVideoFileName: String!
+  name: String!
+}
+
+input GetUniqueContract1155AddressesInput {
+  offset: Int
+  limit: Int
+}
+
+enum StreamInteractionType {
+  tts_interaction
+  package_interaction
+}
+
+type StreamInteraction {
+  id: ID!
+  interactionType: String!
+  text: String
+  owner: User!
+  channel: Channel!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  softDelete: Boolean!
+}
+
+input PostStreamInteractionInput {
+  streamInteractionType: StreamInteractionType!
+  text: String
+  channelId: ID!
+}
+
+input UpdateStreamInteractionInput {
+  interactionId: ID!
+  softDeleted: Boolean!
+}
+
+input GetStreamInteractionsInput {
+  channelId: ID!
+  streamInteractionTypes: [StreamInteractionType!]
+  orderBy: SortOrder!
+  softDeleted: Boolean
+}
+
+enum SharesEventState {
+  PENDING
+  LIVE
+  LOCK
+  PAYOUT_CURRENT
+  PAYOUT_PREVIOUS
+  PAYOUT
+}
+
+type ChatCommand {
+  command: String!
+  response: String!
+}
+
+type SharesEvent {
+  id: ID!
+  sharesSubjectQuestion: String
+  sharesSubjectAddress: String
+  options: [String]
+  chainId: Int
+  channelId: ID
+  eventState: SharesEventState
+  resultIndex: Int
+  softDelete: Boolean
+  createdAt: DateTime!
+}
+
+type ChannelUserRole {
+  id: Int!
+  userAddress: String!
+  role: Int!
+  channelId: Int!
+  updatedAt: String!
+  createdAt: String!
+}
+
+type LivepeerStreamData {
+  streamKey: String
+  playbackId: String
+  isActive: Boolean
+  record: Boolean
+}
+
+type LivepeerStreamSessionsData {
+  id: String!
+  createdAt: BigInt!
+  mp4Url: String!
+  duration: Float!
+}
+
+type LivepeerViewershipMetrics {
+  timestamp: String!
+  viewCount: String!
+  playtimeMins: String!
+  playbackId: String!
+}
+
+type UpdateManyResponse {
+  count: Int!
+}
+
+input PostChannelInput {
+  slug: String!
+  name: String
+  description: String
+  canRecord: Boolean
+  allowNfcs: Boolean
+}
+
+input SoftDeleteChannelInput {
+  slug: String!
+}
+
+input MigrateChannelToLivepeerInput {
+  slug: String!
+  canRecord: Boolean
+}
+
+input ChannelFeedInput {
+  limit: Int
+  offset: Int
+  orderBy: SortBy
+  isLive: Boolean
+}
+
+input UpdateChannelTextInput {
+  id: ID!
+  name: String!
+  description: String!
+}
+
+input UpdateChannelCustomButtonInput {
+  id: ID!
+  customButtonAction: String!
+  customButtonPrice: Int!
+}
+
+input PostSharesEventInput {
+  channelId: ID!
+  chainId: Int!
+  sharesSubjectQuestion: String
+  sharesSubjectAddress: String
+  options: [String]
+}
+
+input UpdateSharesEventInput {
+  id: ID!
+  sharesSubjectQuestion: String
+  sharesSubjectAddress: String
+  eventState: SharesEventState
+  resultIndex: Int
+}
+
+input PostCloseSharesEventsInput {
+  channelId: ID!
+  chainId: Int!
+  sharesEventIds: [ID!]!
+}
+
+input PostUserRoleForChannelInput {
+  channelId: ID!
+  userAddress: String!
+  role: Int!
+}
+
+input UpdateChannelVibesTokenPriceRangeInput {
+  id: ID!
+  vibesTokenPriceRange: [String]!
+}
+
+input UpdatePinnedChatMessagesInput {
+  id: ID!
+  pinnedChatMessages: [String]!
+}
+
+input ChannelSearchInput {
+  query: String
+  skip: Int
+  limit: Int
+  containsSlug: Boolean
+  slugOnly: Boolean
+  includeSoftDeletedChannels: Boolean
+}
+
+input UpdateChannelAllowNfcsInput {
+  id: ID!
+  allowNfcs: Boolean
+}
+
+input GetLivepeerStreamDataInput {
+  streamId: String
+}
+
+input IGetLivepeerViewershipMetricsInput {
+  playbackId: String
+  fromTimestampInMilliseconds: String!
+  toTimestampInMilliseconds: String!
+  timeStep: String!
+}
+
+input IGetLivepeerStreamSessionsDataInput {
+  streamId: String!
+  limit: Int!
+  skip: Int!
+}
+
+input UpdateLivepeerStreamDataInput {
+  streamId: String
+  canRecord: Boolean
+}
+
+input UpdateChannelFidSubscriptionInput {
+  fid: Int!
+  channelId: Int!
+  isAddingSubscriber: Boolean!
+}
+
+type DeviceToken {
+  id: ID!
+  token: String!
+  address: String
+  notificationsLive: Boolean!
+  notificationsNFCs: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input PostDeviceTokenInput {
+  token: String!
+  notificationsLive: Boolean
+  notificationsNFCs: Boolean
+  address: String
+}
+
+input UpdateDeviceInput {
+  token: String!
+  notificationsLive: Boolean!
+  notificationsNFCs: Boolean!
+}
+
+input GetDeviceByTokenInput {
+  token: String!
+}
+
+type CreatorToken {
+  id: ID!
+  address: String!
+  symbol: String!
+  name: String!
+  price: Float!
+  channel: Channel!
+  holders: Int
+  users: [UserCreatorToken!]!
+}
+
+type UserCreatorToken {
+  userId: String!
+  tokenId: ID!
+  quantity: Int!
+  user: User!
+  token: CreatorToken!
+}
+
+input CreateCreatorTokenInput {
+  address: String!
+  symbol: String!
+  name: String!
+  price: Float!
+  channelId: ID!
+}
+
+input GetTokenHoldersInput {
+  limit: Int
+  offset: Int
+  channelId: ID!
+}
+
+input UpdateUserCreatorTokenQuantityInput {
+  tokenAddress: String!
+  purchasedAmount: Int!
+}
+
+input UpdateCreatorTokenPriceInput {
+  tokenAddress: String!
+  price: Float!
+}
+
+input ChatCommandInput {
+  command: String!
+  response: String!
+}
+
+input UpdateDeleteChatCommandInput {
+  id: ID!
+  chatCommands: [ChatCommandInput]!
+}
+
+type Subscription {
+  id: ID!
+  endpoint: String!
+  expirationTime: String
+  p256dh: String!
+  auth: String!
+  softDelete: Boolean!
+  createdAt: DateTime!
+  allowedChannels: [ID!]
+}
+
+input PostSubscriptionInput {
+  endpoint: String!
+  expirationTime: String
+  p256dh: String!
+  auth: String!
+}
+
+input SoftDeleteSubscriptionInput {
+  id: ID!
+}
+
+input ToggleSubscriptionInput {
+  endpoint: String!
+}
+
+input MoveChannelAlongSubscriptionInput {
+  channelId: ID!
+  endpoint: String!
+}
+
+input SendAllNotificationsInput {
+  title: String!
+  body: String!
+  pathname: String
+  channelId: ID
+}
+
+input GetSubscriptionsByChannelIdInput {
+  channelId: ID!
+}
+
+input AddSuggestedChannelsToSubscriptionsInput {
+  channelIds: [ID!]!
+}
+
+type BaseLeaderboard {
+  id: ID!
+  amount: Float!
+  owner: User
+}
+
+input PostBaseLeaderboardInput {
+  amount: Float!
+}
+
+enum EventType {
+  YAY_NAY_VOTE
+  VIP_BADGE
+  SIDE_BET
+}
+
+enum GamblableEvent {
+  BET_CREATE
+  BET_YES_BUY
+  BET_NO_BUY
+  BET_YES_SELL
+  BET_NO_SELL
+  BET_CLAIM_PAYOUT
+  BADGE_CLAIM_PAYOUT
+  BADGE_BUY
+  BADGE_SELL
+}
+
+type GamblableInteraction {
+  id: ID!
+  channel: Channel!
+  type: GamblableEvent!
+  user: User!
+  createdAt: DateTime!
+  eventId: Int
+  eventType: EventType
+  softDelete: Boolean
+}
+
+type GamblableEventLeaderboard {
+  id: ID!
+  channelId: Int!
+  user: User!
+  totalFees: Float!
+  chainId: Int!
+}
+
+type NumberOfHolders {
+  channel: Channel!
+  holders: Int!
+}
+
+input GetBadgeHoldersByChannelInput {
+  channelId: ID!
+}
+
+input PostBetInput {
+  channelId: ID!
+  userAddress: String!
+  eventId: Int!
+  eventType: EventType!
+}
+
+input PostBetTradeInput {
+  channelId: ID!
+  chainId: Int!
+  userAddress: String!
+  eventId: Int!
+  eventType: EventType!
+  type: GamblableEvent!
+  fees: Float!
+}
+
+input PostBadgeTradeInput {
+  channelId: ID!
+  chainId: Int!
+  userAddress: String!
+  eventId: Int!
+  isBuying: Boolean!
+  fees: Float!
+}
+
+input PostClaimPayoutInput {
+  channelId: ID!
+  userAddress: String!
+  eventId: Int!
+  eventType: EventType!
+  type: GamblableEvent!
+}
+
+input GetBetsByChannelInput {
+  channelId: ID!
+}
+
+input GetBetsByUserInput {
+  userAddress: String!
+}
+
+input GetGamblableEventLeaderboardByChannelIdInput {
+  channelId: ID!
+  chainId: Int!
+}
+
+input GetGamblableEventUserRankInput {
+  channelId: ID!
+  chainId: Int!
+  userAddress: String!
+}
+
+input GetUnclaimedEvents {
+  chainId: Int!
+  userAddress: String
+  channelId: ID
+}
+
+enum VibesTransactionType {
+  BUY
+  SELL
+}
+
+type VibesTransaction {
+  id: ID!
+  uniqueTransactionId: String!
+  chainId: Int!
+  transactionHash: String!
+  blockNumber: BigInt
+  transactionType: VibesTransactionType
+  traderAddress: String
+  streamerAddress: String
+  totalVibesSupplyAfterTrade: String
+  vibesAmount: String
+  weiAmount: String
+  protocolWeiFees: String
+  streamerWeiFees: String
+  createdAt: DateTime!
+}
+
+input DateRange {
+  start: DateTime
+  end: DateTime
+}
+
+input GetVibesTransactionsInput {
+  chainId: Int!
+  streamerAddress: String!
+  dateRange: DateRange
+  take: Int
+  skip: Int
+}
+
+input PostVibesTradesInput {
+  chainId: Int!
+  tokenAddress: String!
+}
+
+enum TempTokenType {
+  SINGLE_MODE
+  VERSUS_MODE
+}
+
+type TempToken {
+  id: ID!
+  tokenAddress: String!
+  chainId: Int!
+  channelId: Int!
+  ownerAddress: String!
+  name: String!
+  symbol: String!
+  endUnixTimestamp: BigInt!
+  factoryAddress: String!
+  creationBlockNumber: BigInt!
+  minBaseTokenPrice: BigInt!
+  protocolFeePercentage: BigInt!
+  streamerFeePercentage: BigInt!
+  highestTotalSupply: BigInt!
+  totalSupply: BigInt!
+  hasRemainingFundsForCreator: Boolean!
+  isAlwaysTradeable: Boolean!
+  hasHitTotalSupplyThreshold: Boolean!
+  channel: Channel!
+  transferredLiquidityOnExpiration: BigInt
+  tokenType: TempTokenType
+  createdAt: DateTime!
+}
+
+type TempTokenWithBalance {
+  id: ID!
+  tokenAddress: String!
+  chainId: Int!
+  channelId: Int!
+  ownerAddress: String!
+  name: String!
+  symbol: String!
+  endUnixTimestamp: BigInt!
+  creationBlockNumber: BigInt!
+  protocolFeePercentage: BigInt!
+  streamerFeePercentage: BigInt!
+  highestTotalSupply: BigInt!
+  totalSupply: BigInt!
+  hasRemainingFundsForCreator: Boolean!
+  isAlwaysTradeable: Boolean!
+  hasHitTotalSupplyThreshold: Boolean!
+  balance: BigInt!
+  tokenType: TempTokenType
+}
+
+input GetTempTokensInput {
+  tokenAddress: String
+  ownerAddress: String
+  chainId: Int
+  channelId: Int
+  onlyActiveTokens: Boolean
+  onlyTradeableTokens: Boolean
+  hasHitTotalSupplyThreshold: Boolean
+  isAlwaysTradeable: Boolean
+  factoryAddress: String
+  tokenType: TempTokenType
+  fulfillAllNotAnyConditions: Boolean!
+}
+
+input UpdateTempTokenHasRemainingFundsForCreatorInput {
+  chainId: Int!
+  channelId: Int!
+  tokenType: TempTokenType!
+  factoryAddress: String
+}
+
+input UpdateTempTokenHighestTotalSupplyInput {
+  tokenAddresses: [String]
+  chainId: Int!
+  newTotalSupplies: [String]
+}
+
+input PostTempTokenInput {
+  tokenAddress: String!
+  chainId: Int!
+  channelId: Int!
+  ownerAddress: String!
+  name: String!
+  minBaseTokenPrice: String!
+  symbol: String!
+  endUnixTimestamp: String!
+  factoryAddress: String!
+  creationBlockNumber: String!
+  protocolFeePercentage: String!
+  streamerFeePercentage: String!
+  tokenType: TempTokenType!
+}
+
+input UpdateEndTimestampForTokensInput {
+  tokenAddresses: [String]
+  additionalDurationInSeconds: Int!
+  chainId: Int!
+}
+
+input UpdateTempTokenIsAlwaysTradeableInput {
+  tokenAddressesSetTrue: [String]
+  tokenAddressesSetFalse: [String]
+  chainId: Int!
+}
+
+input UpdateTempTokenHasHitTotalSupplyThresholdInput {
+  tokenAddressesSetTrue: [String]
+  tokenAddressesSetFalse: [String]
+  chainId: Int!
+}
+
+input UpdateTempTokenTransferredLiquidityOnExpirationInput {
+  losingTokenAddress: String!
+  chainId: Int!
+  finalLiquidityInWei: String!
+}
+
+type Package {
+  id: ID!
+  packageName: String!
+  tokenHoldingPrice: String
+  cooldownInSeconds: Int!
+}
+
+input UpdatePackageInput {
+  packageName: String!
+  cooldownInSeconds: Int!
+  tokenHoldingPrice: String!
+}
+
+type Room {
+  roomName: String!
+  inUse: Boolean!
+  availablePackages: [String!]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+input UpdateRoomsInput {
+  roomNameToUse: String!
+}

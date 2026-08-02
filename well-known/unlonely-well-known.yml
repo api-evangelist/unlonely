@@ -1,0 +1,26 @@
+generated: '2026-07-21'
+method: searched
+source: live probes of unlonely.app
+host: https://unlonely.app
+note: >-
+  The unlonely.app domain registration has expired (Namecheap parking page served
+  over plain HTTP as of 2026-07-21); HTTPS connections fail during the TLS handshake
+  (SSL_ERROR_SYSCALL), so every /.well-known/ probe over HTTPS returned no response
+  (status 0) and the HTTP fallback returned 404 from the parking server. No
+  well-known discovery documents are published.
+documents:
+- path: /.well-known/security.txt
+  status: 0
+  http_fallback_status: 404
+- path: /.well-known/openid-configuration
+  status: 0
+  http_fallback_status: 404
+- path: /.well-known/oauth-authorization-server
+  status: 0
+  http_fallback_status: 404
+- path: /.well-known/api-catalog
+  status: 0
+  http_fallback_status: 404
+- path: /.well-known/ai-plugin.json
+  status: 0
+  http_fallback_status: 404

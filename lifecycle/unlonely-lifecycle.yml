@@ -1,0 +1,27 @@
+generated: '2026-07-21'
+method: searched
+source: live probes of unlonely.app + github.com/bguan2020/unlonely-alpha
+status: defunct
+evidence:
+- kind: domain-expired
+  detail: >-
+    https://unlonely.app fails TLS handshake; http://www.unlonely.app returns a
+    Namecheap "Domain registration has expired" parking page (observed 2026-07-21).
+- kind: source-repo-dormant
+  detail: >-
+    The open-source monorepo github.com/bguan2020/unlonely-alpha (web + mobile +
+    server + Solidity contracts) had its last push on 2024-11-15 and is not archived
+    but shows no ongoing development.
+- kind: hosted-app-gone
+  detail: >-
+    The production web app and its GraphQL backend (unlonely-alpha.vercel.app
+    homepage per the repo) are no longer serving the Unlonely product.
+versioning: null
+deprecation: null
+sla: null
+status_page: null
+notes: >-
+  Unlonely was a crypto/web3 livestreaming platform (streams on Base, token-gated
+  chat, clips minted as "NFCs" to Zora) founded by Grace and Brian Guan and backed
+  by Multicoin Capital. The product has wound down; the historical API surface is
+  preserved in graphql/unlonely-schema.json harvested from the open-source server.

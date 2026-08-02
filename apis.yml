@@ -1,8 +1,25 @@
 aid: unlonely
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/unlonely.png
 name: Unlonely
-description: 'Unlonely is a company surfaced as a portfolio company of multicoin-capital and added to
-  the API Evangelist network as a stub for enrichment. Sector: crypto-web3. This profile is a lead awaiting
-  the enrichment pipeline.'
+description: >-
+  Unlonely was a crypto/web3 livestreaming platform founded by Grace and Brian Guan
+  and backed by Multicoin Capital — livestreams on Base with token-gated chat,
+  creator and temp tokens, the $VIBES on-chain interaction economy, and stream clips
+  minted as NFCs (non-fungible clips). The product is defunct: the unlonely.app
+  domain registration has expired and the hosted GraphQL API is no longer live, but
+  the platform was open source and this profile preserves its real GraphQL schema
+  (225 types) harvested from the public monorepo.
 url: https://raw.githubusercontent.com/api-evangelist/unlonely/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -10,12 +27,19 @@ x-backed-by:
 - multicoin-capital
 x-tier: stub
 x-tier-reason: portfolio-lead
+x-status: defunct
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
 - Crypto Web3
+- Livestreaming
+- Video
+- Base
+- NFTs
+- Creator Economy
+- GraphQL
 apis: []
 maintainers:
 - FN: Kin Lane
@@ -25,3 +49,22 @@ maintainers:
 common:
 - type: Website
   url: https://unlonely.app
+- type: SourceCode
+  url: https://github.com/bguan2020/unlonely-alpha
+- type: XProfile
+  url: https://x.com/unlonely_app
+- type: GraphQL
+  url: graphql/unlonely-graphql.md
+- type: LLMsTxt
+  url: llms/unlonely-llms.txt
+- type: Lifecycle
+  url: lifecycle/unlonely-lifecycle.yml
+- type: WellKnown
+  url: well-known/unlonely-well-known.yml
+- type: DataModel
+  url: data-model/unlonely-data-model.yml
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 7
+  pass: local-v1
