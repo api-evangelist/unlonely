@@ -23,14 +23,12 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/unlonely.png
 name: Unlonely
-description: >-
-  Unlonely was a crypto/web3 livestreaming platform founded by Grace and Brian Guan
-  and backed by Multicoin Capital — livestreams on Base with token-gated chat,
-  creator and temp tokens, the $VIBES on-chain interaction economy, and stream clips
-  minted as NFCs (non-fungible clips). The product is defunct: the unlonely.app
-  domain registration has expired and the hosted GraphQL API is no longer live, but
-  the platform was open source and this profile preserves its real GraphQL schema
-  (225 types) harvested from the public monorepo.
+description: 'Unlonely was a crypto/web3 livestreaming platform founded by Grace and Brian Guan and backed
+  by Multicoin Capital — livestreams on Base with token-gated chat, creator and temp tokens, the $VIBES
+  on-chain interaction economy, and stream clips minted as NFCs (non-fungible clips). The product is defunct:
+  the unlonely.app domain registration has expired and the hosted GraphQL API is no longer live, but the
+  platform was open source and this profile preserves its real GraphQL schema (225 types) harvested from
+  the public monorepo.'
 url: https://raw.githubusercontent.com/api-evangelist/unlonely/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -41,7 +39,7 @@ x-tier-reason: portfolio-lead
 x-status: defunct
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-07-21'
+modified: '2026-09-15'
 tags:
 - Company
 - Crypto Web3
@@ -51,6 +49,7 @@ tags:
 - NFT
 - Creator Economy
 - GraphQL
+- Defunct
 tags_raw:
 - Company
 - Crypto Web3
