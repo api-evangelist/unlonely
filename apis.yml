@@ -39,7 +39,7 @@ x-tier-reason: portfolio-lead
 x-status: defunct
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-09-15'
+modified: '2026-09-16'
 tags:
 - Company
 - Crypto Web3
@@ -49,6 +49,7 @@ tags:
 - NFT
 - Creator Economy
 - GraphQL
+- Defunct
 tags_raw:
 - Company
 - Crypto Web3
@@ -58,6 +59,7 @@ tags_raw:
 - NFTs
 - Creator Economy
 - GraphQL
+- Defunct
 apis: []
 maintainers:
 - FN: Kin Lane
