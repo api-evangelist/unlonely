@@ -1,14 +1,17 @@
 aid: unlonely
 deliveryModel:
   model: unknown
+  license_evidence:
+    not_product:
+    - bguan2020/unlonely-alpha
   open_source: unknown
   commercial: false
   callable_host: false
   label: Delivery model not determined — needs a product licence on record
   confidence: low
   source:
-  - repository-unlicensed
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: unknown
@@ -50,6 +53,7 @@ tags:
 - Creator Economy
 - GraphQL
 - Defunct
+- Web3
 tags_raw:
 - Company
 - Crypto Web3
@@ -60,6 +64,7 @@ tags_raw:
 - Creator Economy
 - GraphQL
 - Defunct
+- Web3
 apis: []
 maintainers:
 - FN: Kin Lane
